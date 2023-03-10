@@ -3,7 +3,11 @@ import requests
 import pandas
 
 def parse(name):
-    url = 'https://omsk.hh.ru/search/vacancy?text='+str(name)+'&area=68'
+    url=''
+    try:
+        url = 'https://omsk.hh.ru/search/vacancy?text='+str(name)+'&area=68'
+    except:
+        print('Подключение недоступно')
 
     headers = {
         'User-Agent': 'My User Agent 1.0',
