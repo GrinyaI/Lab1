@@ -22,24 +22,27 @@ def parse(name):
     serpitem = []
     vacimp = []
     vaccompen = []
-    for data in block:
-        work = data.find(class_='serp-item__title')
-        boss = data.find(class_='bloko-link bloko-link_kind-tertiary')
-        price = data.find('span', class_='bloko-header-section-3')
-        if work is not None:
-            serpitem.append(work.text)
-        else:
-            serpitem.append('-')
+    try:
+        for data in block:
+            work = data.find(class_='serp-item__title')
+            boss = data.find(class_='bloko-link bloko-link_kind-tertiary')
+            price = data.find('span', class_='bloko-header-section-3')
+            if work is not None:
+                serpitem.append(work.text)
+            else:
+                serpitem.append('-')
 
-        if boss is not None:
-            vacimp.append(boss.text.replace("\xa0"," "))
-        else:
-            vacimp.append('-')
+            if boss is not None:
+                vacimp.append(boss.text.replace("\xa0"," "))
+            else:
+                vacimp.append('-')
 
-        if price is not None:
-            vaccompen.append(price.text.replace("\u202f",""))
-        else:
-            vaccompen.append('-')
+            if price is not None:
+                vaccompen.append(price.text.replace("\u202f",""))
+            else:
+                vaccompen.append('-')
+    except:
+        print('Не удалось выполнить запись в массивы')
     print(serpitem,vacimp, vaccompen)
     dat = {'Должность:':serpitem,'Работодатель:':vacimp,'Заработная плата:':vaccompen}
     pandas.DataFrame(dat).to_excel('Res.xlsx')
