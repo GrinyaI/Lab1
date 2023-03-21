@@ -4,20 +4,23 @@ import pandas
 
 def parse(name):
     url=''
+    block = 0
     try:
         url = 'https://omsk.hh.ru/search/vacancy?text='+str(name)+'&area=68'
     except:
-        print('Подключение недоступно')
-
+        print('Не удалось подключиться к сайту')
     headers = {
         'User-Agent': 'My User Agent 1.0',
         'From': 'youremail@domain.example'
     }
-    page = requests.get(url, headers=headers)
-    print(page.status_code)
-    soup = BeautifulSoup(page.text, "html.parser")
+    try:
+        page = requests.get(url, headers=headers)
+        print(page.status_code)
+        soup = BeautifulSoup(page.text, "html.parser")
 
-    block = soup.findAll('div', class_='serp-item')
+        block = soup.findAll('div', class_='serp-item')
+    except:
+        print("Не удалось получить информацию с сайта")
 
     serpitem = []
     vacimp = []
@@ -45,4 +48,7 @@ def parse(name):
         print('Не удалось выполнить запись в массивы')
     print(serpitem,vacimp, vaccompen)
     dat = {'Должность:':serpitem,'Работодатель:':vacimp,'Заработная плата:':vaccompen}
-    pandas.DataFrame(dat).to_excel('Res.xlsx')
+    try:
+        pandas.DataFrame(dat).to_excel('Res.xlsx')
+    except:
+        print("Не удалось выполнить запись в Excel")
